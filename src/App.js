@@ -1,24 +1,32 @@
-import logo from './logo.svg';
-import './App.css';
+// App.js
+import React, { useEffect } from 'react';
+import { ThemeProvider, CssBaseline, Container } from '@mui/material';
+import { createTheme } from '@mui/material/styles';
+import ReactGA from 'react-ga';
+import Header from './components/Header.js';
+import ArticleList from './components/ArticleList.js';
+import Footer from './components/Footer.js';
+import Video from './components/Video.js';
+
+const theme = createTheme();
 
 function App() {
+  useEffect(() => {
+    // Inicializar Google Analytics con tu ID de seguimiento
+    ReactGA.initialize('G-N5QCM1BHT7');
+    // Enviar una página vista inicial
+    ReactGA.pageview(window.location.pathname + window.location.search);
+  }, []);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <Header />
+      <Container sx={{ overflowY: 'auto', height: '100%' }}>
+        <Video />
+        <ArticleList />
+      </Container>
+      <Footer />
+    </ThemeProvider>
   );
 }
 
