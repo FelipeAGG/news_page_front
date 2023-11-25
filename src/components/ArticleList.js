@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setArticles } from '../actions';
 import { Card, CardContent, CardMedia, Typography, Grid, Container } from '@mui/material';
+import OrderDropdown from './OrderDropdown';
 
 // Imagen por defecto si no se proporciona una imagen para el artículo
 const defaultImage = 'https://via.placeholder.com/150';
@@ -11,25 +12,29 @@ const ArticleList = () => {
   const dispatch = useDispatch();
   const articles = useSelector((state) => state.articles);
 
-  useEffect(() => {
-    const fetchArticles = async () => {
-      try {
-        const response = await fetch('http://localhost:4000/news');
-        const data = await response.json();
+  const fetchArticles = async (sortBy = 'date', sortOrder = 'asc') => {
+    try {
+      const url = `http://localhost:4000/news?sortBy=${sortBy}&sortOrder=${sortOrder}`;
+  
+      const response = await fetch(url);
+      const data = await response.json();
+  
+      dispatch(setArticles(data));
+    } catch (error) {
+      console.error('Error al cargar artículos:', error);
+    }
+  };  
 
-        dispatch(setArticles(data));
-      } catch (error) {
-        console.error('Error al cargar artículos:', error);
-      }
-    };
+  useEffect(() => {
     fetchArticles();
   }, [dispatch]);
 
   return (
     <Container>
+      <OrderDropdown onOrderChange={fetchArticles} />
       <Grid container spacing={3}>
-        {articles.map((article) => (
-          <Grid item xs={12} sm={6} md={4} key={article.id}>
+        {articles.map((article, i) => (
+          <Grid item xs={12} sm={6} md={4} key={article.id +' '+ i}>
             <Card>
               <CardMedia
                 component="img"

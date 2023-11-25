@@ -21,7 +21,7 @@ function App() {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Header />
-      <Container sx={{ overflowY: 'auto', height: '100%' }}>
+      <Container sx={{ overflowY: 'auto', height: '100%', marginTop: '20px' }}>
         <Video />
         <ArticleList />
       </Container>
